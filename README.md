@@ -1,46 +1,62 @@
 # blog
 
-Blog personal de Javier Sisques — notas sobre desarrollo, homelab y DevOps.
-Publicado en <https://blog.jsisques.net>.
+Javier Sisques' personal blog — notes on software development, homelab, and
+DevOps. Published at <https://blog.jsisques.net>.
 
-Sitio estático construido con [Astro](https://astro.build). Cada entrada es
-un fichero Markdown en `src/content/blog/`, gestionado como una
+Static site built with [Astro](https://astro.build). Each post is a
+Markdown file in `src/content/blog/<lang>/`, managed as a
 [content collection](https://docs.astro.build/en/guides/content-collections/)
-con Zod para validar el frontmatter.
+with Zod validating the frontmatter.
 
-## Escribir una entrada
+## Internationalization
 
-Crea un fichero en `src/content/blog/mi-entrada.md`:
+The site is bilingual (Spanish and English), routed under `/es/` and `/en/`
+— `/` redirects to `/es/` (the default locale). UI strings live in
+`src/i18n/ui.ts`; `src/i18n/utils.ts` has the helpers (`getLangFromUrl`,
+`useTranslations`, `splitLocalizedId`, ...) pages and components use to
+read the current locale and translate.
+
+Every post is required in both languages. The same filename in
+`src/content/blog/es/` and `src/content/blog/en/` pairs the two versions —
+that's what the language switcher in the header links to. `hreflang`
+alternate tags and the sitemap's per-locale `xhtml:link` entries are
+generated from that pairing too.
+
+## Writing a post
+
+Create matching files at `src/content/blog/es/my-post.md` and
+`src/content/blog/en/my-post.md` (same filename in both folders):
 
 ```md
 ---
-title: 'Título de la entrada'
-description: 'Resumen corto para el listado, el RSS y los metadatos.'
+title: 'Post title'
+description: 'Short summary for the listing, RSS feed, and metadata.'
 date: 2026-08-13
-tags: ['tag-uno', 'tag-dos']
-# draft: true   # opcional, oculta el post hasta quitarlo
-# cover: '/imagen.png'   # opcional
+tags: ['tag-one', 'tag-two']
+# draft: true   # optional, hides the post until removed
+# cover: '/image.png'   # optional
 ---
 
-Contenido en Markdown.
+Markdown content.
 ```
 
-La entrada aparece automáticamente en la portada, en `/tags/<tag>/` y en el
-feed RSS (`/rss.xml`), ordenada por `date` descendente.
+The post automatically appears on `/<lang>/`, under `/<lang>/tags/<tag>/`,
+and in that locale's RSS feed (`/<lang>/rss.xml`), sorted by `date`
+descending.
 
-## Desarrollo local
+## Local development
 
 ```bash
 pnpm install
 pnpm dev       # http://localhost:4321
-pnpm build     # astro check + build a ./dist
+pnpm build     # astro check + build to ./dist
 pnpm preview
 pnpm lint
 pnpm format
 pnpm test
 ```
 
-Requiere Node 22 y pnpm (ver `packageManager` en `package.json`).
+Requires Node 22 and pnpm (see `packageManager` in `package.json`).
 
 ## Docker
 
@@ -49,36 +65,36 @@ docker build -t jsisques/blog:local .
 docker run -p 8080:8080 jsisques/blog:local
 ```
 
-Ver `docker/README.md` para más detalle. Sitio estático servido por nginx,
-sin backend ni base de datos.
+See `docker/README.md` for more detail. Static site served by nginx, no
+backend, no database.
 
 ## CI/CD
 
-Reutiliza los workflows reusables de
-[sisques-labs/workflows](https://github.com/sisques-labs/workflows), mismo
-patrón que [sisques-labs/daysoff](https://github.com/sisques-labs/daysoff):
+Reuses the reusable workflows from
+[sisques-labs/workflows](https://github.com/sisques-labs/workflows), same
+pattern as [sisques-labs/daysoff](https://github.com/sisques-labs/daysoff):
 
-- **CI** (`.github/workflows/ci.yml`): lint, test y build en cada PR.
-- **Docker Build** (`.github/workflows/docker.yml`): build multi-arch de
-  prueba + escaneo Trivy en cada PR, sin publicar.
-- **CodeQL** (`.github/workflows/codeql.yml`): análisis estático semanal y
-  en cada push/PR a `develop`/`staging`/`main`.
-- **PR Labeler** (`.github/workflows/pr-labeler.yml`): etiqueta las PRs
-  según los ficheros que tocan (ver `.github/labeler.yml`).
-- **Release Train** (`.github/workflows/release-train.yml`): en cada push a
-  `develop`/`staging`/`main` calcula versión semántica (commits
-  convencionales vía `cliff.toml`), publica la imagen en Docker Hub
-  (`jsisques/blog`) y GHCR (`ghcr.io/jsisques/blog`), y escanea la imagen.
+- **CI** (`.github/workflows/ci.yml`): lint, test, and build on every PR.
+- **Docker Build** (`.github/workflows/docker.yml`): multi-arch test build
+  + Trivy scan on every PR, without publishing.
+- **CodeQL** (`.github/workflows/codeql.yml`): static analysis weekly and
+  on every push/PR to `develop`/`staging`/`main`.
+- **PR Labeler** (`.github/workflows/pr-labeler.yml`): labels PRs based on
+  the files they touch (see `.github/labeler.yml`).
+- **Release Train** (`.github/workflows/release-train.yml`): on every push
+  to `develop`/`staging`/`main`, computes a semantic version (conventional
+  commits via `cliff.toml`), publishes the image to Docker Hub
+  (`jsisques/blog`) and GHCR (`ghcr.io/jsisques/blog`), and scans the image.
 
-Requiere los secrets `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN` configurados
-en este repositorio.
+Requires the `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` secrets to be
+configured on this repository.
 
-Todos los commits siguen [Conventional Commits](https://www.conventionalcommits.org/).
+All commits follow [Conventional Commits](https://www.conventionalcommits.org/).
 
-## Despliegue
+## Deployment
 
-El despliegue en Kubernetes (Argo CD, namespace, Service NodePort, exposición
-vía Cloudflare Tunnel en `blog.jsisques.net`) vive en
-[JSisques/homelab](https://github.com/JSisques/homelab), bajo
-`kubernetes/applications/blog/`. Este repositorio solo construye y publica
-la imagen; el clúster nunca compila el sitio.
+Kubernetes deployment (Argo CD, namespace, NodePort Service, exposed via
+Cloudflare Tunnel at `blog.jsisques.net`) lives in
+[JSisques/homelab](https://github.com/JSisques/homelab), under
+`kubernetes/applications/blog/`. This repository only builds and publishes
+the image; the cluster never builds the site.

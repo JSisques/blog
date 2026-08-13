@@ -1,4 +1,12 @@
 ---
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
@@ -13,7 +21,7 @@ const year = new Date().getFullYear();
       href="https://github.com/JSisques/blog"
       class="hover:text-sky-600 dark:hover:text-sky-400"
     >
-      Código fuente en GitHub
+      {t('footer.source')}
     </a>
   </div>
 </footer>

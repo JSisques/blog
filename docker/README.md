@@ -1,6 +1,6 @@
 # blog
 
-Blog personal de Javier Sisques — notas sobre desarrollo, homelab y DevOps.
+Javier Sisques' personal blog — notes on software development, homelab, and DevOps.
 
 Static Astro site served by nginx. No backend, no database.
 
