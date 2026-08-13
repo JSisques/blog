@@ -10,10 +10,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
 <BaseLayout
   title="Javier Sisques — Blog"
-  description="Notas sobre desarrollo, homelab y DevOps."
+  description="Notes on software development, homelab, and DevOps."
 >
   <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">
-    Últimas entradas
+    Latest posts
   </h1>
   <div class="mt-6">
     {
@@ -21,7 +21,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         posts.map((post) => <PostCard post={post} />)
       ) : (
         <p class="text-slate-500 dark:text-slate-500">
-          Todavía no hay entradas publicadas.
+          No posts published yet.
         </p>
       )
     }

@@ -13,10 +13,7 @@ for (const post of posts) {
 const tags = [...tagCounts.entries()].sort((a, b) => a[0].localeCompare(b[0]));
 ---
 
-<BaseLayout
-  title="Tags — Javier Sisques"
-  description="Todas las etiquetas del blog."
->
+<BaseLayout title="Tags — Javier Sisques" description="All tags on the blog.">
   <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Tags</h1>
   <ul class="mt-6 flex flex-wrap gap-3">
     {

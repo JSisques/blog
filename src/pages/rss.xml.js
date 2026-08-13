@@ -6,7 +6,7 @@ export async function GET(context) {
 
   return rss({
     title: 'Javier Sisques — Blog',
-    description: 'Notas sobre desarrollo, homelab y DevOps.',
+    description: 'Notes on software development, homelab, and DevOps.',
     site: context.site,
     items: posts
       .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
