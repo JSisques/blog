@@ -4,13 +4,28 @@ Javier Sisques' personal blog — notes on software development, homelab, and
 DevOps. Published at <https://blog.jsisques.net>.
 
 Static site built with [Astro](https://astro.build). Each post is a
-Markdown file in `src/content/blog/`, managed as a
+Markdown file in `src/content/blog/<lang>/`, managed as a
 [content collection](https://docs.astro.build/en/guides/content-collections/)
 with Zod validating the frontmatter.
 
+## Internationalization
+
+The site is bilingual (Spanish and English), routed under `/es/` and `/en/`
+— `/` redirects to `/es/` (the default locale). UI strings live in
+`src/i18n/ui.ts`; `src/i18n/utils.ts` has the helpers (`getLangFromUrl`,
+`useTranslations`, `splitLocalizedId`, ...) pages and components use to
+read the current locale and translate.
+
+Every post is required in both languages. The same filename in
+`src/content/blog/es/` and `src/content/blog/en/` pairs the two versions —
+that's what the language switcher in the header links to. `hreflang`
+alternate tags and the sitemap's per-locale `xhtml:link` entries are
+generated from that pairing too.
+
 ## Writing a post
 
-Create a file at `src/content/blog/my-post.md`:
+Create matching files at `src/content/blog/es/my-post.md` and
+`src/content/blog/en/my-post.md` (same filename in both folders):
 
 ```md
 ---
@@ -25,8 +40,9 @@ tags: ['tag-one', 'tag-two']
 Markdown content.
 ```
 
-The post automatically appears on the homepage, under `/tags/<tag>/`, and in
-the RSS feed (`/rss.xml`), sorted by `date` descending.
+The post automatically appears on `/<lang>/`, under `/<lang>/tags/<tag>/`,
+and in that locale's RSS feed (`/<lang>/rss.xml`), sorted by `date`
+descending.
 
 ## Local development
 

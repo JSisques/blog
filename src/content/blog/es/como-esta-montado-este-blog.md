@@ -9,7 +9,7 @@ Un resumen rápido de la infraestructura detrás de este blog, para quien le int
 
 ## El sitio
 
-Es un sitio estático con [Astro](https://astro.build). Cada entrada vive como un fichero Markdown bajo `src/content/blog/`, con un frontmatter mínimo:
+Es un sitio estático con [Astro](https://astro.build). Cada entrada vive como un fichero Markdown bajo `src/content/blog/<idioma>/`, con un frontmatter mínimo:
 
 ```md
 ---
@@ -20,7 +20,7 @@ tags: ['tag-uno', 'tag-dos']
 ---
 ```
 
-Astro genera páginas de listado, páginas por tag, un feed RSS y un `sitemap.xml` a partir de esa colección.
+El sitio es bilingüe (español/inglés): cada entrada necesita su traducción en `src/content/blog/es/mi-post.md` y `src/content/blog/en/mi-post.md` — el mismo nombre de fichero en ambas carpetas empareja las dos versiones y activa el selector de idioma. Astro genera páginas de listado, páginas por tag, un feed RSS y un `sitemap.xml` para cada idioma a partir de esa colección.
 
 ## El empaquetado
 

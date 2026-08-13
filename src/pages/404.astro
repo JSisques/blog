@@ -1,18 +1,41 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/global.css';
 ---
 
-<BaseLayout title="404 — Javier Sisques" description="Page not found.">
-  <div class="py-20 text-center">
-    <p class="text-sm font-semibold text-sky-600 dark:text-sky-400">404</p>
-    <h1 class="mt-2 text-2xl font-bold text-slate-900 dark:text-slate-100">
-      Page not found
-    </h1>
-    <a
-      href="/"
-      class="mt-6 inline-block text-sky-600 underline hover:text-sky-500 dark:text-sky-400"
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>404 — Javier Sisques</title>
+    <meta
+      name="description"
+      content="Página no encontrada. / Page not found."
+    />
+  </head>
+  <body>
+    <main
+      class="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-4 text-center"
     >
-      Back to home
-    </a>
-  </div>
-</BaseLayout>
+      <p class="text-sm font-semibold text-sky-600 dark:text-sky-400">404</p>
+      <h1 class="mt-2 text-2xl font-bold text-slate-900 dark:text-slate-100">
+        Página no encontrada / Page not found
+      </h1>
+      <div class="mt-6 flex gap-4">
+        <a
+          href="/es/"
+          class="text-sky-600 underline hover:text-sky-500 dark:text-sky-400"
+        >
+          Volver al inicio (ES)
+        </a>
+        <a
+          href="/en/"
+          class="text-sky-600 underline hover:text-sky-500 dark:text-sky-400"
+        >
+          Back to home (EN)
+        </a>
+      </div>
+    </main>
+  </body>
+</html>
