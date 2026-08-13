@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
-  // ids come out as "<lang>/<slug>", e.g. "es/bienvenida-al-blog" — see
+  // ids come out as "<lang>/<slug>", e.g. "es/welcome-to-my-blog" — see
   // src/i18n/utils.ts#splitLocalizedId. The same slug in both the es/ and
   // en/ folders is what pairs a post with its translation.
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),

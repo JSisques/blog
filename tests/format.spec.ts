@@ -13,10 +13,10 @@ describe('formatDate', () => {
 
 describe('slugFromId', () => {
   it('strips a trailing .md extension', () => {
-    expect(slugFromId('bienvenida-al-blog.md')).toBe('bienvenida-al-blog');
+    expect(slugFromId('welcome-to-my-blog.md')).toBe('welcome-to-my-blog');
   });
 
   it('leaves an id without extension untouched', () => {
-    expect(slugFromId('bienvenida-al-blog')).toBe('bienvenida-al-blog');
+    expect(slugFromId('welcome-to-my-blog')).toBe('welcome-to-my-blog');
   });
 });

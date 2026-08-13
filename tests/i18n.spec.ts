@@ -3,7 +3,7 @@ import { getLangFromUrl, otherLang, splitLocalizedId } from '../src/i18n/utils';
 
 describe('splitLocalizedId', () => {
   it('splits a localized content collection id into lang and slug', () => {
-    expect(splitLocalizedId('es/bienvenida-al-blog')).toEqual({ lang: 'es', slug: 'bienvenida-al-blog' });
+    expect(splitLocalizedId('es/welcome-to-my-blog')).toEqual({ lang: 'es', slug: 'welcome-to-my-blog' });
     expect(splitLocalizedId('en/welcome')).toEqual({ lang: 'en', slug: 'welcome' });
   });
 });
