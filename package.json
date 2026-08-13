@@ -1,7 +1,7 @@
 {
   "name": "jsisques/blog",
-  "version": "0.1.0",
-  "description": "Blog personal de Javier Sisques — notas sobre desarrollo, homelab y DevOps.",
+  "version": "0.0.0",
+  "description": "Javier Sisques' personal blog — notes on software development, homelab, and DevOps.",
   "author": "Javier Sisques",
   "repository": {
     "type": "git",

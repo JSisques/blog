@@ -1,0 +1,23 @@
+---
+import { languages } from '../i18n/ui';
+import { otherLang, useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  /** Path in the *other* language to link to, without its /<lang> prefix, e.g. "/blog/my-post/". */
+  path: string;
+}
+
+const { lang, path } = Astro.props;
+const target = otherLang(lang);
+const t = useTranslations(lang);
+---
+
+<a
+  href={`/${target}${path}`}
+  class="rounded-full border border-slate-200 px-3 py-1 text-sm font-medium text-slate-600 hover:border-sky-300 hover:text-sky-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-sky-700 dark:hover:text-sky-400"
+  hreflang={target}
+>
+  {t('lang.switchTo')}
+  <span class="sr-only">({languages[target]})</span>
+</a>

@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { languages } from '../../i18n/ui';
+import { useTranslations, splitLocalizedId, type Lang } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const posts = (
+  await getCollection(
+    'blog',
+    ({ id, data }) => splitLocalizedId(id).lang === lang && !data.draft,
+  )
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('site.title')}
+  description={t('site.description')}
+  otherLangPath="/"
+>
+  <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">
+    {t('home.title')}
+  </h1>
+  <div class="mt-6">
+    {
+      posts.length > 0 ? (
+        posts.map((post) => <PostCard lang={lang} post={post} />)
+      ) : (
+        <p class="text-slate-500 dark:text-slate-500">{t('home.empty')}</p>
+      )
+    }
+  </div>
+</BaseLayout>

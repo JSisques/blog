@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { languages } from '../../../i18n/ui';
+import {
+  useTranslations,
+  splitLocalizedId,
+  type Lang,
+} from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return Object.keys(languages).flatMap((lang) => {
+    const localizedPosts = posts.filter(
+      (post) => splitLocalizedId(post.id).lang === lang,
+    );
+    const tags = [...new Set(localizedPosts.flatMap((post) => post.data.tags))];
+
+    return tags.map((tag) => ({
+      params: { lang, tag },
+      props: {
+        tag,
+        posts: localizedPosts
+          .filter((post) => post.data.tags.includes(tag))
+          .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+      },
+    }));
+  });
+}
+
+const lang = Astro.params.lang as Lang;
+const { tag, posts } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={`#${tag} — Javier Sisques`}
+  description={`${t('tag.postsTaggedWith')} #${tag}.`}
+  otherLangPath={`/tags/${tag}/`}
+>
+  <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">#{tag}</h1>
+  <div class="mt-6">
+    {posts.map((post) => <PostCard lang={lang} post={post} />)}
+  </div>
+</BaseLayout>
