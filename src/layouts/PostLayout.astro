@@ -2,17 +2,22 @@
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import { formatDate } from '../lib/format';
+import { splitLocalizedId, type Lang } from '../i18n/utils';
 
 interface Props {
+  lang: Lang;
   post: CollectionEntry<'blog'>;
 }
 
-const { post } = Astro.props;
+const { lang, post } = Astro.props;
+const { slug } = splitLocalizedId(post.id);
 ---
 
 <BaseLayout
+  lang={lang}
   title={`${post.data.title} — Javier Sisques`}
   description={post.data.description}
+  otherLangPath={`/blog/${slug}/`}
 >
   <article>
     <header class="mb-8">
@@ -25,12 +30,12 @@ const { post } = Astro.props;
         class="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-500"
       >
         <time datetime={post.data.date.toISOString()}
-          >{formatDate(post.data.date)}</time
+          >{formatDate(post.data.date, lang)}</time
         >
         {
           post.data.tags.map((tag) => (
             <a
-              href={`/tags/${tag}/`}
+              href={`/${lang}/tags/${tag}/`}
               class="rounded-full bg-slate-100 px-2 py-0.5 hover:bg-sky-100 hover:text-sky-700 dark:bg-slate-800 dark:hover:bg-sky-950 dark:hover:text-sky-400"
             >
               #{tag}

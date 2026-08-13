@@ -2,28 +2,35 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
+import { otherLang, type Lang } from '../i18n/utils';
 
 interface Props {
+  lang: Lang;
   title: string;
   description: string;
+  /** Path in the other language equivalent to the current page, e.g. "/blog/my-post/" or "/". */
+  otherLangPath: string;
 }
 
-const { title, description } = Astro.props;
+const { lang, title, description, otherLangPath } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const alternateURL = new URL(`/${otherLang(lang)}${otherLangPath}`, Astro.site);
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" hreflang={lang} href={canonicalURL} />
+    <link rel="alternate" hreflang={otherLang(lang)} href={alternateURL} />
     <link
       rel="alternate"
       type="application/rss+xml"
       title={title}
-      href="/rss.xml"
+      href={`/${lang}/rss.xml`}
     />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -31,13 +38,14 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
     <meta name="twitter:card" content="summary" />
   </head>
   <body>
-    <Header />
+    <Header lang={lang} otherLangPath={otherLangPath} />
     <main class="mx-auto min-h-[60vh] max-w-3xl px-4 py-10">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>

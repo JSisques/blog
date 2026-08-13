@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content';
+import PostLayout from '../../../layouts/PostLayout.astro';
+import { splitLocalizedId, type Lang } from '../../../i18n/utils';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => {
+    const { lang, slug } = splitLocalizedId(post.id);
+    return { params: { lang, slug }, props: { post } };
+  });
+}
+
+const lang = Astro.params.lang as Lang;
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<PostLayout lang={lang} post={post}>
+  <Content />
+</PostLayout>
