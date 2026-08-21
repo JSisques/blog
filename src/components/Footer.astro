@@ -10,16 +10,14 @@ const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
-<footer
-  class="mt-16 border-t border-slate-200 py-8 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-500"
->
+<footer class="border-t border-[var(--border-subtle)] px-6 py-7">
   <div
-    class="mx-auto flex max-w-3xl flex-col items-center gap-2 px-4 text-center sm:flex-row sm:justify-between sm:text-left"
+    class="mx-auto flex max-w-[var(--container-max)] flex-col items-center gap-2 font-mono text-xs text-[var(--text-muted)] sm:flex-row sm:justify-between"
   >
-    <p>&copy; {year} Javier Sisques.</p>
+    <p class="m-0">&copy; {year} jsisques</p>
     <a
       href="https://github.com/JSisques/blog"
-      class="hover:text-sky-600 dark:hover:text-sky-400"
+      class="hover:text-[var(--accent)]"
     >
       {t('footer.source')}
     </a>

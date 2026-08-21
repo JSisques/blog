@@ -1,0 +1,102 @@
+---
+import { useTranslations, type Lang } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<dialog
+  id="subscribe-dialog"
+  class="m-auto w-[min(400px,calc(100vw-32px))] rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--bg-surface)] p-0 text-[var(--text-secondary)] shadow-[var(--shadow-lg)] backdrop:bg-[oklch(0%_0_0_/_0.6)]"
+>
+  <form
+    method="dialog"
+    class="flex items-center justify-between border-b border-[var(--border-subtle)] px-5 py-4"
+  >
+    <span class="font-mono font-bold text-[var(--text-primary)]"
+      >{t('subscribe.title')}</span
+    >
+    <button
+      type="submit"
+      aria-label="Close"
+      class="text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"><path d="M4 4l16 16M20 4L4 20"></path></svg
+      >
+    </button>
+  </form>
+
+  <div class="p-5">
+    <div data-subscribe-form>
+      <p class="m-0 mb-4">{t('subscribe.body')}</p>
+      <label class="flex flex-col gap-1.5">
+        <input
+          type="email"
+          required
+          placeholder={t('subscribe.placeholder')}
+          class="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] bg-[var(--bg-canvas)] px-3 py-2.5 text-[var(--text-primary)] outline-none focus:border-[var(--accent)] focus:shadow-[0_0_0_3px_var(--focus-ring)]"
+        />
+      </label>
+      <div class="mt-4 flex justify-end">
+        <button
+          type="button"
+          data-subscribe-submit
+          class="rounded-[var(--radius-sm)] border border-transparent bg-[var(--accent)] px-4 py-2 font-mono text-sm font-semibold text-[var(--text-on-accent)] hover:bg-[var(--accent-hover)]"
+        >
+          {t('subscribe.submit')}
+        </button>
+      </div>
+    </div>
+    <p
+      data-subscribe-success
+      class="m-0 hidden font-mono text-[var(--accent-hover)]"
+    >
+      {t('subscribe.success')}
+    </p>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById(
+    'subscribe-dialog',
+  ) as HTMLDialogElement | null;
+  const openers = document.querySelectorAll('[data-subscribe-open]');
+  const form = dialog?.querySelector('[data-subscribe-form]');
+  const success = dialog?.querySelector('[data-subscribe-success]');
+  const submit = dialog?.querySelector('[data-subscribe-submit]');
+  const input = dialog?.querySelector('input[type="email"]');
+
+  openers.forEach((el) => {
+    el.addEventListener('click', () => {
+      dialog?.showModal();
+    });
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+
+  submit?.addEventListener('click', () => {
+    if (!(input instanceof HTMLInputElement) || !input.reportValidity()) return;
+    form?.classList.add('hidden');
+    success?.classList.remove('hidden');
+  });
+
+  dialog?.addEventListener('close', () => {
+    window.setTimeout(() => {
+      form?.classList.remove('hidden');
+      success?.classList.add('hidden');
+      if (input instanceof HTMLInputElement) input.value = '';
+    }, 200);
+  });
+</script>
