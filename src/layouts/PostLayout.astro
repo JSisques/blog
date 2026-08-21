@@ -1,8 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
+import SubscribeCta from '../components/SubscribeCta.astro';
 import { formatDate } from '../lib/format';
-import { splitLocalizedId, type Lang } from '../i18n/utils';
+import { splitLocalizedId, useTranslations, type Lang } from '../i18n/utils';
 
 interface Props {
   lang: Lang;
@@ -11,6 +12,7 @@ interface Props {
 
 const { lang, post } = Astro.props;
 const { slug } = splitLocalizedId(post.id);
+const t = useTranslations(lang);
 ---
 
 <BaseLayout
@@ -19,33 +21,45 @@ const { slug } = splitLocalizedId(post.id);
   description={post.data.description}
   otherLangPath={`/blog/${slug}/`}
 >
+  <a
+    href={`/${lang}/`}
+    class="mb-6 inline-block font-mono text-[0.8125rem] text-[var(--text-muted)] hover:text-[var(--accent)]"
+  >
+    {t('post.back')}
+  </a>
   <article>
-    <header class="mb-8">
-      <h1
-        class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100"
-      >
-        {post.data.title}
-      </h1>
-      <div
-        class="mt-3 flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-500"
-      >
+    <header>
+      <div class="mb-2.5 font-mono text-xs text-[var(--text-muted)]">
         <time datetime={post.data.date.toISOString()}
           >{formatDate(post.data.date, lang)}</time
         >
+      </div>
+      <h1
+        class="font-mono text-[length:var(--text-h1)] leading-[var(--lh-tight)] text-[var(--text-primary)]"
+      >
+        {post.data.title}
+      </h1>
+      <div class="mt-3.5 flex flex-wrap gap-2.5">
         {
           post.data.tags.map((tag) => (
             <a
               href={`/${lang}/tags/${tag}/`}
-              class="rounded-full bg-slate-100 px-2 py-0.5 hover:bg-sky-100 hover:text-sky-700 dark:bg-slate-800 dark:hover:bg-sky-950 dark:hover:text-sky-400"
+              class="font-mono text-xs text-[var(--accent)] hover:text-[var(--accent-hover)]"
             >
               #{tag}
             </a>
           ))
         }
       </div>
+      <p
+        class="mt-6 text-[length:var(--text-body-lg)] leading-[var(--lh-body)] text-[var(--text-secondary)]"
+      >
+        {post.data.description}
+      </p>
     </header>
     <div class="prose">
       <slot />
     </div>
   </article>
+  <SubscribeCta lang={lang} />
 </BaseLayout>
