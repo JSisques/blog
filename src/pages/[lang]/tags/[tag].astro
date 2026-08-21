@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
+import SubscribeCta from '../../../components/SubscribeCta.astro';
 import { languages } from '../../../i18n/ui';
 import {
   useTranslations,
@@ -41,8 +42,22 @@ const t = useTranslations(lang);
   description={`${t('tag.postsTaggedWith')} #${tag}.`}
   otherLangPath={`/tags/${tag}/`}
 >
-  <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">#{tag}</h1>
+  <p class="font-mono text-xs tracking-[var(--ls-caps)] text-[var(--accent)]">
+    {t('home.eyebrow')}
+  </p>
+  <h1
+    class="mt-3 font-mono text-[length:var(--text-h1)] leading-[var(--lh-tight)] text-[var(--text-primary)]"
+  >
+    #{tag}
+  </h1>
+  <a
+    href={`/${lang}/tags/`}
+    class="mt-4 inline-block font-mono text-[0.8125rem] text-[var(--text-muted)] hover:text-[var(--accent)]"
+  >
+    {t('post.back')}
+  </a>
   <div class="mt-6">
     {posts.map((post) => <PostCard lang={lang} post={post} />)}
   </div>
+  <SubscribeCta lang={lang} />
 </BaseLayout>

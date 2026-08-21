@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SubscribeDialog from '../components/SubscribeDialog.astro';
 import '../styles/global.css';
 import { otherLang, type Lang } from '../i18n/utils';
 
@@ -41,11 +42,14 @@ const alternateURL = new URL(`/${otherLang(lang)}${otherLangPath}`, Astro.site);
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
     <meta name="twitter:card" content="summary" />
   </head>
-  <body>
+  <body class="min-h-screen">
     <Header lang={lang} otherLangPath={otherLangPath} />
-    <main class="mx-auto min-h-[60vh] max-w-3xl px-4 py-10">
+    <main
+      class="mx-auto min-h-[60vh] max-w-[var(--container-narrow)] px-6 pt-14 pb-20"
+    >
       <slot />
     </main>
     <Footer lang={lang} />
+    <SubscribeDialog lang={lang} />
   </body>
 </html>
