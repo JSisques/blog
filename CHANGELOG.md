@@ -1,6 +1,10 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.2.0] - 2026-08-21
+
+### Features
+- Reskin blog with jsisques design system (439aebb)
 ## [0.1.0] - 2026-08-13
 
 ### Build
