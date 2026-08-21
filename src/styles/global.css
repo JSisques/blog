@@ -1,64 +1,228 @@
 @import 'tailwindcss';
 
+/* Design tokens synced from the "jsisques" Claude Design project (Blog.dc.html). */
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url(https://fonts.gstatic.com/s/jetbrainsmono/v23/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff2)
+    format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 400 800;
+  font-style: italic;
+  font-display: swap;
+  src:
+    url(https://fonts.gstatic.com/s/jetbrainsmono/v23/tDba2o-flEEny0FZhsfKu5WU4zAXI9ptR9en1JhpaKk3RiP2mA.woff2)
+    format('woff2');
+}
+@font-face {
+  font-family: 'Manrope';
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+  src:
+    url(https://fonts.gstatic.com/s/manrope/v15/xn7gYHE41ni1AdIRqAuZuw1Bx9mbZk79FCoS2A.woff2)
+    format('woff2');
+}
+
 @theme {
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Manrope', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
   --font-mono:
-    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.4);
+  --shadow-md: 0 4px 12px oklch(0% 0 0 / 0.35), 0 1px 2px oklch(0% 0 0 / 0.3);
+  --shadow-lg: 0 12px 32px oklch(0% 0 0 / 0.45), 0 2px 6px oklch(0% 0 0 / 0.3);
+}
+
+:root {
+  --gray-950: oklch(14% 0.006 260);
+  --gray-900: oklch(17% 0.008 260);
+  --gray-800: oklch(22% 0.009 260);
+  --gray-700: oklch(28% 0.01 260);
+  --gray-600: oklch(38% 0.01 260);
+  --gray-500: oklch(50% 0.01 260);
+  --gray-400: oklch(63% 0.01 260);
+  --gray-300: oklch(76% 0.008 260);
+  --gray-200: oklch(86% 0.006 260);
+  --gray-100: oklch(93% 0.004 260);
+  --gray-50: oklch(97% 0.002 260);
+  --blue-600: oklch(45% 0.19 264);
+  --blue-500: oklch(58% 0.19 264);
+  --blue-400: oklch(68% 0.16 264);
+  --blue-300: oklch(78% 0.11 264);
+  --green-500: oklch(65% 0.17 149);
+  --amber-500: oklch(75% 0.16 75);
+  --red-500: oklch(62% 0.21 25);
+  --cyan-500: oklch(70% 0.11 220);
+
+  --bg-canvas: var(--gray-950);
+  --bg-surface: var(--gray-900);
+  --bg-surface-raised: var(--gray-800);
+  --bg-overlay: oklch(14% 0.006 260 / 0.9);
+  --border-subtle: var(--gray-800);
+  --border-default: var(--gray-700);
+  --border-strong: var(--gray-600);
+  --text-primary: var(--gray-50);
+  --text-secondary: var(--gray-300);
+  --text-muted: var(--gray-500);
+  --text-on-accent: oklch(99% 0 0);
+  --accent: var(--blue-500);
+  --accent-hover: var(--blue-400);
+  --accent-active: var(--blue-600);
+  --accent-muted: oklch(58% 0.19 264 / 0.14);
+  --accent-border: oklch(58% 0.19 264 / 0.4);
+  --success: var(--green-500);
+  --warning: var(--amber-500);
+  --danger: var(--red-500);
+  --info: var(--cyan-500);
+  --focus-ring: oklch(68% 0.16 264 / 0.5);
+
+  --text-display: clamp(2.75rem, 5vw, 4.5rem);
+  --text-h1: clamp(2rem, 3.2vw, 2.75rem);
+  --text-h2: 1.75rem;
+  --text-h3: 1.375rem;
+  --text-h4: 1.125rem;
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-caption: 0.75rem;
+  --lh-tight: 1.1;
+  --lh-heading: 1.25;
+  --lh-body: 1.6;
+  --ls-caps: 0.08em;
+
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 280ms;
+
+  --container-max: 1120px;
+  --container-narrow: 720px;
 }
 
 body {
-  @apply bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  @apply font-sans antialiased;
+}
+
+a {
+  color: var(--accent);
+}
+a:hover {
+  color: var(--accent-hover);
+}
+
+::selection {
+  background: var(--accent-muted);
+  color: var(--text-primary);
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(circle, var(--border-subtle) 1px, transparent 1px);
+  background-size: 18px 18px;
 }
 
 .prose {
-  @apply max-w-none text-slate-700 dark:text-slate-300;
+  max-width: none;
+  color: var(--text-secondary);
 }
 
 .prose h2 {
-  @apply mt-10 mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100;
+  margin-top: 40px;
+  margin-bottom: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-h3);
+  color: var(--text-primary);
 }
 
 .prose h3 {
-  @apply mt-8 mb-3 text-xl font-semibold text-slate-900 dark:text-slate-100;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--text-h4);
+  color: var(--text-primary);
 }
 
 .prose p {
-  @apply my-4 leading-relaxed;
+  margin-top: 20px;
+  line-height: var(--lh-body);
 }
 
 .prose a {
-  @apply text-sky-600 underline decoration-sky-300 underline-offset-2 hover:text-sky-500 dark:text-sky-400;
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent-border);
+  text-underline-offset: 2px;
 }
 
-.prose ul {
-  @apply my-4 list-disc pl-6;
-}
-
+.prose ul,
 .prose ol {
-  @apply my-4 list-decimal pl-6;
+  margin-top: 16px;
+  padding-left: 20px;
+  line-height: var(--lh-body);
+}
+.prose ul {
+  list-style-type: disc;
+}
+.prose ol {
+  list-style-type: decimal;
 }
 
 .prose li {
-  @apply my-1;
+  margin-bottom: 6px;
 }
 
 .prose blockquote {
-  @apply my-6 border-l-4 border-sky-300 pl-4 italic text-slate-600 dark:border-sky-700 dark:text-slate-400;
+  margin-top: 20px;
+  padding-left: 16px;
+  border-left: 2px solid var(--border-default);
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .prose code {
-  @apply rounded bg-slate-100 px-1.5 py-0.5 font-mono text-sm dark:bg-slate-800;
+  border-radius: var(--radius-xs);
+  background: var(--bg-surface-raised);
+  padding: 2px 6px;
+  font-size: 0.875em;
+  color: var(--accent-hover);
 }
 
 .prose pre {
-  @apply my-6 overflow-x-auto rounded-lg bg-slate-900 p-4 text-slate-100;
+  margin-top: 20px;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface-raised);
+  padding: 16px;
+  font-size: 0.8125rem;
+  color: var(--accent-hover);
 }
 
 .prose pre code {
-  @apply bg-transparent p-0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
 }
 
 .prose img {
-  @apply my-6 rounded-lg;
+  margin-top: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
 }
